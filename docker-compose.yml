@@ -1,0 +1,70 @@
+version: '3.8'
+
+volumes:
+  pg_data:
+  db_backups:
+  static:
+  media:
+
+services:
+
+  db:
+    image: postgres:17
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - db_backups:/var/lib/postgresql/backups
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U test -d test" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: .
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+    container_name: backend
+    volumes:
+      - static:/app/static
+      - media:/app/media
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f daphne || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  nginx:
+    build: ./nginx
+    depends_on:
+      - backend
+    ports:
+      - "8000:80"
+    volumes:
+      - static:/app/static
+      - media:/app/media
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: always
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  celery:
+    build: .
+    command: celery -A src worker --loglevel=info --pool=gevent --concurrency=20
+    env_file: .env
+    restart: always
+    depends_on:
+      backend:
+        condition: service_healthy
