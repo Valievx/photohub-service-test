@@ -42,7 +42,7 @@ function updatePhotoCard(data) {
         } else if (data.status === 'processing') {
             statusIcon = '<i class="bi bi-gear text-info spin"></i>';
         } else if (data.status === 'pending') {
-            statusIcon = '<i class="bi bi-hourglass-split text-warning spin"></i>';
+            statusIcon = '<i class="bi bi-gear text-info spin"></i>';
         } else {
             statusIcon = '<i class="bi bi-x-circle text-danger"></i>';
         }
@@ -72,7 +72,7 @@ function updatePhotoCard(data) {
         } else if (data.status === 'processing') {
             statusIcon = '<i class="bi bi-gear text-info spin"></i>';
         } else if (data.status === 'pending') {
-            statusIcon = '<i class="bi bi-hourglass-split text-warning spin"></i>';
+            statusIcon = '<i class="bi bi-gear text-info spin"></i>';
         } else {
             statusIcon = '<i class="bi bi-x-circle text-danger"></i>';
         }
@@ -168,7 +168,7 @@ async function massUpload() {
     massTimeElement.textContent = '0';
 
     const csrftoken = getCookie('csrftoken');
-    const CONCURRENCY = 10;
+    const CONCURRENCY = 20;
     const TOTAL_REQUESTS = 100;
     let completed = 0;
     const errors = [];

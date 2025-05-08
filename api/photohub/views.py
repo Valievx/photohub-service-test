@@ -7,6 +7,7 @@ from apps.photohub.models import Photo
 from api.photohub import swagger
 from .serializers import PhotoResultSerializer
 from .tasks import process_image_task
+from .utils import send_photo_update
 
 
 class ProcessImageView(APIView):
@@ -17,6 +18,7 @@ class ProcessImageView(APIView):
             return Response({'error': 'No image provided'}, status=status.HTTP_400_BAD_REQUEST)
 
         photo = Photo.objects.create(filename=file.name, status='pending')
+        send_photo_update(photo)
         process_image_task.delay(photo.id)
         serializer = PhotoResultSerializer(photo)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
