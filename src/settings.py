@@ -84,16 +84,12 @@ CHANNEL_LAYERS = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django_db_geventpool.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('POSTGRES_DB'),
         'USER': os.getenv('POSTGRES_USER'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
         'HOST': os.getenv('POSTGRES_HOST'),
         'PORT': os.getenv('POSTGRES_PORT'),
-        'OPTIONS': {
-            'MAX_CONNS': 50,
-            'REUSE_CONNS': 30,
-        },
     }
 }
 
@@ -154,8 +150,6 @@ CELERY_RESULT_BACKEND = 'django-db'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
-CELERY_WORKER_CONCURRENCY = 20
-CELERY_WORKER_POOL = 'gevent'
 
 ENVIRONMENT = os.getenv('ENVIRONMENT')  # production, testing, development
 

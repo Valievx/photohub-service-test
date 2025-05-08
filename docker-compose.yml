@@ -62,7 +62,7 @@ services:
 
   celery:
     build: .
-    command: celery -A src worker --loglevel=info --pool=gevent --concurrency=20
+    command: celery -A src worker --loglevel=info --pool=solo
     env_file: .env
     restart: always
     depends_on:

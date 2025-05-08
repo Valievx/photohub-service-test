@@ -168,7 +168,7 @@ async function massUpload() {
     massTimeElement.textContent = '0';
 
     const csrftoken = getCookie('csrftoken');
-    const CONCURRENCY = 20;
+    const CONCURRENCY = 10;
     const TOTAL_REQUESTS = 100;
     let completed = 0;
     const errors = [];
