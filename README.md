@@ -36,3 +36,4 @@ docker compose up -d --build
 # После запуска:
 # - API: http://localhost:8000
 # - Админка: http://localhost:8000/admin
+# - Документация http://localhost:8000/swagger
